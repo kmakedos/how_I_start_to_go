@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"os"
 	"strings"
 )
 
@@ -15,16 +16,21 @@ type weatherData struct {
 }
 
 func query(city string) (weatherData, error) {
-	resp, err := http.Get("http://api.openweathermap.org/data/2.5/weather?q=" + city + "&APPID=f43f1ddb6354407ef500954130aca9bd")
+	appId := os.Getenv("OPENMAP_TOKEN")
+	if appId == "" {
+		log.Println("Error OPENMAP_TOKEN Not set")
+	}
+	resp, err := http.Get("http://api.openweathermap.org/data/2.5/weather?q=" + city + "&APPID=" + appId)
+	var d weatherData
 	if resp.StatusCode != 200 {
 		log.Println("Error " + resp.Status)
+		return d, err
 	}
 	if err != nil {
 		return weatherData{}, err
 	}
 	defer resp.Body.Close()
 
-	var d weatherData
 	if err := json.NewDecoder(resp.Body).Decode(&d); err != nil {
 		return weatherData{}, err
 	}
