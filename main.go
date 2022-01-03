@@ -6,55 +6,107 @@ import (
 	"net/http"
 	"os"
 	"strings"
+	"time"
 )
 
-type weatherData struct {
-	Main struct {
-		Kelvin float64 `json:"temp"`
-	} `json:"main"`
-	Name string `json:"name"`
+type weatherProvider interface {
+	temperature(city string) (float64, error)
 }
 
-func query(city string) (weatherData, error) {
+type openWeatherMap struct{}
+
+func (w openWeatherMap) temperature(city string) (float64, error) {
 	appId := os.Getenv("OPENMAP_TOKEN")
 	if appId == "" {
 		log.Println("Error OPENMAP_TOKEN Not set")
 	}
 	resp, err := http.Get("http://api.openweathermap.org/data/2.5/weather?q=" + city + "&APPID=" + appId)
-	var d weatherData
+	var d struct {
+		Main struct {
+			Kelvin float64 `json:"temp"`
+		} `json:"main"`
+		Name string `json:"name"`
+	}
 	if resp.StatusCode != 200 {
 		log.Println("Error " + resp.Status)
-		return d, err
+		return 0, err
 	}
 	if err != nil {
-		return weatherData{}, err
+		return 0, err
 	}
 	defer resp.Body.Close()
 
 	if err := json.NewDecoder(resp.Body).Decode(&d); err != nil {
-		return weatherData{}, err
+		return 0, err
 	}
 	d.Main.Kelvin -= 273.15
-	return d, nil
+	return d.Main.Kelvin, nil
+}
+
+type weatherApi struct {
+	apiKey string
+}
+
+func (w weatherApi) temperature(city string) (float64, error) {
+	appId := os.Getenv("WEATHERAPI_TOKEN")
+	if appId == "" {
+		log.Println("Error WEATHERAPI_TOKEN Not set")
+	}
+	resp, err := http.Get("http://api.weatherapi.com/v1/current.json?key=" + appId + "&q=" + city + "&aqi=no")
+	if err != nil {
+		return 0, err
+	}
+	defer resp.Body.Close()
+	var d struct {
+		Observation struct {
+			Celsius float64 `json:"temp_c"`
+		} `json:"current"`
+	}
+	if err := json.NewDecoder(resp.Body).Decode(&d); err != nil {
+		return 0, err
+	}
+	return d.Observation.Celsius, nil
+}
+
+type multiWeatherProvider []weatherProvider
+
+func (w multiWeatherProvider) temperature(city string) (float64, error) {
+	sum := 0.0
+	for _, provider := range w {
+		k, err := provider.temperature(city)
+		if err != nil {
+			return 0, err
+		}
+		sum += k
+	}
+	return sum / float64(len(w)), nil
 }
 
 func main() {
-	http.HandleFunc("/", hello)
+
+	mw := multiWeatherProvider{
+		openWeatherMap{},
+		weatherApi{apiKey: ""},
+	}
+
 	http.HandleFunc("/weather/", func(w http.ResponseWriter, r *http.Request) {
+		begin := time.Now()
 		city := strings.SplitN(r.URL.Path, "/", 3)[2]
 		log.Printf("Querying city %s\n", city)
-		data, err := query(city)
-		log.Println("Data analyzed:")
-		log.Println(data)
+		temp, err := mw.temperature(city)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 		w.Header().Set("Content-Type", "application/json;charset=utf-8")
-		json.NewEncoder(w).Encode(data)
-
+		json.NewEncoder(w).Encode(map[string]interface{}{
+			"city": city,
+			"temp": temp,
+			"took": time.Since(begin).String(),
+		})
 	})
 	http.ListenAndServe(":8080", nil)
+	http.HandleFunc("/", hello)
 }
 
 func hello(w http.ResponseWriter, r *http.Request) {
