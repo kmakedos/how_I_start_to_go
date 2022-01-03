@@ -71,13 +71,26 @@ func (w weatherApi) temperature(city string) (float64, error) {
 type multiWeatherProvider []weatherProvider
 
 func (w multiWeatherProvider) temperature(city string) (float64, error) {
-	sum := 0.0
+	temps := make(chan float64, len(w))
+	errs := make(chan error, len(w))
 	for _, provider := range w {
-		k, err := provider.temperature(city)
-		if err != nil {
+		go func(p weatherProvider) {
+			k, err := provider.temperature(city)
+			if err != nil {
+				errs <- err
+				return
+			}
+			temps <- k
+		}(provider)
+	}
+	sum := 0.0
+	for i := 0; i < len(w); i++ {
+		select {
+		case temp := <-temps:
+			sum += temp
+		case err := <-errs:
 			return 0, err
 		}
-		sum += k
 	}
 	return sum / float64(len(w)), nil
 }
