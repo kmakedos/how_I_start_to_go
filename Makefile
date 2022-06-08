@@ -15,7 +15,6 @@ compile:
 build: compile
 	docker build -t weather .
 
-
 clean:
 	docker rmi -f weather
 	rm -vf weather
