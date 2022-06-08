@@ -51,6 +51,8 @@ func (w weatherApi) temperature(city string) (float64, error) {
 	appId := os.Getenv("WEATHERAPI_TOKEN")
 	if appId == "" {
 		log.Println("Error WEATHERAPI_TOKEN Not set")
+		log.Println("Setting a generic one")
+		appId = "a673de7c018b48bea4e91404220301"
 	}
 	resp, err := http.Get("http://api.weatherapi.com/v1/current.json?key=" + appId + "&q=" + city + "&aqi=no")
 	if err != nil {
@@ -118,10 +120,12 @@ func main() {
 			"took": time.Since(begin).String(),
 		})
 	})
+	http.HandleFunc("/health", hello)
+	log.Println("Starting server and listening to port 8080...")
+	log.Println("Accepted api endpoints :/health and :/weather/<city>")
 	http.ListenAndServe(":8080", nil)
-	http.HandleFunc("/", hello)
 }
 
 func hello(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Hello!"))
+	w.Write([]byte("OK"))
 }
