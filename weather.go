@@ -54,7 +54,7 @@ func (w weatherApi) temperature(city string) (float64, error) {
 		log.Println("Setting a generic one")
 		appId = "a673de7c018b48bea4e91404220301"
 	}
-	resp, err := http.Get("http://api.weatherapi.com/v1/current.json?key=" + appId + "&q=" + city + "&aqi=no")
+	resp, err := http.Get("https://api.weatherapi.com/v1/current.json?key=" + appId + "&q=" + city + "&aqi=no")
 	if err != nil {
 		return 0, err
 	}
