@@ -6,9 +6,9 @@ replicaCount: 1
 
 image:
   repository: ghcr.io/kmakedos/how_i_start_to_go
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "0.1.1"
+  tag: "main"
 
 imagePullSecrets: []
 nameOverride: ""
