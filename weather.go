@@ -10,8 +10,10 @@ import (
 )
 
 const (
-	WEATHERAPI  = "api.weatherapi.com"
-	OPENWEATHER = "api.openweathermap.org"
+	//	WEATHERAPI  = "api.weatherapi.com"
+	//	OPENWEATHER = "api.openweathermap.org"
+	WEATHERAPI  = "weatherapi.local"
+	OPENWEATHER = "openweather.local"
 )
 
 type weatherProvider interface {
