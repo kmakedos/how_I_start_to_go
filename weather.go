@@ -9,6 +9,11 @@ import (
 	"time"
 )
 
+const (
+	WEATHERAPI  = "api.weatherapi.com"
+	OPENWEATHER = "api.openweathermap.org"
+)
+
 type weatherProvider interface {
 	temperature(city string) (float64, error)
 }
@@ -20,7 +25,7 @@ func (w openWeatherMap) temperature(city string) (float64, error) {
 	if appId == "" {
 		log.Println("Error OPENMAP_TOKEN Not set")
 	}
-	resp, err := http.Get("http://api.openweathermap.org/data/2.5/weather?q=" + city + "&APPID=" + appId)
+	resp, err := http.Get("http://" + OPENWEATHER + "/data/2.5/weather?q=" + city + "&APPID=" + appId)
 	var d struct {
 		Main struct {
 			Kelvin float64 `json:"temp"`
@@ -54,7 +59,7 @@ func (w weatherApi) temperature(city string) (float64, error) {
 		log.Println("Setting a generic one")
 		appId = "a673de7c018b48bea4e91404220301"
 	}
-	resp, err := http.Get("http://weatherapi.local/v1/current.json?key=" + appId + "&q=" + city + "&aqi=no")
+	resp, err := http.Get("http://" + WEATHERAPI + "/v1/current.json?key=" + appId + "&q=" + city + "&aqi=no")
 	if err != nil {
 		return 0, err
 	}
