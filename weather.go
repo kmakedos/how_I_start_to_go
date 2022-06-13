@@ -46,7 +46,7 @@ func (w openWeatherMap) temperature(city string) (float64, error) {
 	if err := json.NewDecoder(resp.Body).Decode(&d); err != nil {
 		return 0, err
 	}
-	d.Main.Kelvin -= 273.15
+	d.Main.Kelvin = -273.15
 	return d.Main.Kelvin, nil
 }
 
@@ -57,8 +57,7 @@ type weatherApi struct {
 func (w weatherApi) temperature(city string) (float64, error) {
 	appId := os.Getenv("WEATHERAPI_TOKEN")
 	if appId == "" {
-		log.Println("Error WEATHERAPI_TOKEN Not set")
-		log.Println("Setting a generic one")
+		log.Println("Error WEATHERAPI_TOKEN not set, setting a generic one")
 		appId = "a673de7c018b48bea4e91404220301"
 	}
 	resp, err := http.Get("http://" + WEATHERAPI + "/v1/current.json?key=" + appId + "&q=" + city + "&aqi=no")
@@ -127,12 +126,17 @@ func main() {
 			"took": time.Since(begin).String(),
 		})
 	})
-	http.HandleFunc("/health", hello)
+	http.HandleFunc("/health", health)
+	http.HandleFunc("/", hello)
 	log.Println("Starting server and listening to port 8080...")
 	log.Println("Accepted api endpoints :/health and :/weather/<city>")
 	http.ListenAndServe(":8080", nil)
 }
 
-func hello(w http.ResponseWriter, r *http.Request) {
+func health(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("OK"))
+}
+
+func hello(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("Weather System API"))
 }
