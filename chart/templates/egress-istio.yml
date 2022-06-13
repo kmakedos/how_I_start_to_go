@@ -32,3 +32,39 @@ spec:
         - api.weatherapi.com
       tls:
         mode: PASSTHROUGH
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: api-weatherapi-com-vs
+spec:
+  hosts:
+    - api.weatherapi.com
+  gateways:
+    - api-weatherapi-com-gw
+  tls:
+    - match:
+        - port: 443
+          sniHosts:
+            - api.weatherapi.com
+      route:
+        - destination:
+            host: api.weatherapi.com-local
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: ServiceEntry
+metadata:
+  name: api-weatherapi-com-local
+spec:
+  hosts:
+    - api.weatherapi.com-local
+  ports:
+    - number: 443
+      name: https
+      protocol: HTTPS
+  location: MESH_EXTERNAL
+  resolution: DNS
+  endpoints:
+    - address: api.weatherapi.com
+      ports:
+        http: 443
