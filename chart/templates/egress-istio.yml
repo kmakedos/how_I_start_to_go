@@ -25,10 +25,10 @@ spec:
   gateways:
     - https-api-weatherapi-com
   tls:
-    - match:
-        - ports: 443
-          sniHosts:
-            - weatherapi.com
+  - match:
+    - ports: 443
+      sniHosts:
+      - weatherapi.com
       route:
         - destination:
             host: egress-api-weatherapi-com
