@@ -1,7 +1,7 @@
 apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
 metadata:
-  name: weather-gateway
+  name: weather-in-gw
 spec:
   selector:
     istio: ingressgateway # use istio default controller
@@ -19,12 +19,12 @@ spec:
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
-  name: weather
+  name: weather-in
 spec:
   hosts:
   - "*"
   gateways:
-  - weather-gateway
+  - weather-in-gw
   http:
   - match:
     - uri:
