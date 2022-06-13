@@ -1,0 +1,38 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: weather-gateway
+spec:
+  selector:
+    istio: ingressgateway # use istio default controller
+  servers:
+  - port:
+      number: 443
+      name: https
+      protocol: HTTPS
+    tls:
+      mode: SIMPLE
+      credentialName: weather-credential
+    hosts:
+    - "*"
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: weather
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - weather-gateway
+  http:
+  - match:
+    - uri:
+        exact: /health
+    - uri:
+        prefix: /weather
+    route:
+    - destination:
+        host: weather-meteo.weather.svc.cluster.local
+        port:
+          number: 80
