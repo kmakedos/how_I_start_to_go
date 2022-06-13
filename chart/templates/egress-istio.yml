@@ -26,12 +26,12 @@ spec:
     - https-api-weatherapi-com
   tls:
   - match:
-    - ports: 443
+    - port: 443
       sniHosts:
-      - weatherapi.com
-      route:
-        - destination:
-            host: egress-api-weatherapi-com
+        - api.weatherapi.com
+    route:
+    - destination:
+        host: api.weatherapi.local
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: ServiceEntry
@@ -39,7 +39,7 @@ metadata:
   name: egress-https-api-weatherapi-com
 spec:
   hosts:
-    - egress-api-weatherapi-com
+    - api.weatherapi.local
   ports:
     - number: 443
       name: https
@@ -47,6 +47,6 @@ spec:
   location: MESH_EXTERNAL
   resolution: DNS
   endpoints:
-  - address: weatherapi.com
+  - address: api.weatherapi.com
     ports:
       http: 443
