@@ -1,7 +1,7 @@
 apiVersion: networking.istio.io/v1alpha3
 kind: ServiceEntry
 metadata:
-  name: weatherapi.local
+  name: weatherapi
 spec:
   hosts:
     - api.weatherapi.com
