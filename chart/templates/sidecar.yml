@@ -1,0 +1,12 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Sidecar
+metadata:
+  name: weather-istio
+
+spec:
+  workloadSelector:
+    labels:
+      app.kubernetes.io/instance: weather
+  egress:
+    - hosts:
+        - "external-services/weatherapi.local"

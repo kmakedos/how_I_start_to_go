@@ -46,7 +46,7 @@ func (w openWeatherMap) temperature(city string) (float64, error) {
 	if err := json.NewDecoder(resp.Body).Decode(&d); err != nil {
 		return 0, err
 	}
-	d.Main.Kelvin = -273.15
+	d.Main.Kelvin -= 273.15
 	return d.Main.Kelvin, nil
 }
 
