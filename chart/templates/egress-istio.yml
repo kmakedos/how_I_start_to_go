@@ -5,10 +5,8 @@ metadata:
 spec:
   hosts:
     - api.weatherapi.com
+  location: MESH_EXTERNAL
   ports:
-    - number: 80
-      name: http-port
-      protocol: HTTP
     - number: 443
       name: https
       protocol: HTTPS
