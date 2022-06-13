@@ -1,52 +1,13 @@
 apiVersion: networking.istio.io/v1alpha3
-kind: Gateway
+kind: ServiceEntry
 metadata:
-  name: https-api-weatherapi-com
-spec:
-  selector:
-    istio: egressgateway
-  servers:
-    - port:
-        number: 443
-        name: https-api-weatherapi-com-443
-        protocol: TLS # Mark as TLS as we are passing HTTPS through.
-      hosts:
-        - weatherapi.com
-      tls:
-        mode: PASSTHROUGH
----
-apiVersion: networking.istio.io/v1alpha3
-kind: VirtualService
-metadata:
-  name: egress-api-weatherapi-com
+  name: weatherapi-se
 spec:
   hosts:
     - api.weatherapi.com
-  gateways:
-    - https-api-weatherapi-com
-  tls:
-  - match:
-    - port: 443
-      sniHosts:
-        - api.weatherapi.com
-    route:
-    - destination:
-        host: api.weatherapi.local
----
-apiVersion: networking.istio.io/v1alpha3
-kind: ServiceEntry
-metadata:
-  name: egress-https-api-weatherapi-com
-spec:
-  hosts:
-    - api.weatherapi.local
   ports:
     - number: 443
-      name: https
+      name: http
       protocol: HTTPS
-  location: MESH_EXTERNAL
   resolution: DNS
-  endpoints:
-  - address: api.weatherapi.com
-    ports:
-      http: 443
+  location: MESH_EXTERNAL
