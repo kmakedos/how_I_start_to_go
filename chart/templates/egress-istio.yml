@@ -11,3 +11,24 @@ spec:
       protocol: HTTPS
   resolution: DNS
   location: MESH_EXTERNAL
+  endpoints:
+  - address: istio-egressgateway.istio-system.svc.cluster.local
+    ports:
+      http: 443
+---
+#apiVersion: networking.istio.io/v1alpha3
+#kind: Gateway
+#metadata:
+#  name: api-weatherapi-com-gw
+#spec:
+#  selector:
+#    istio: egressgateway
+#  servers:
+#    - port:
+#        number: 443
+#        name: https
+#        protocol: TLS # Mark as TLS as we are passing HTTPS through.
+#      hosts:
+#        - api.weatherapi.com
+#      tls:
+#        mode: PASSTHROUGH
