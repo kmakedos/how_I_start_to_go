@@ -40,7 +40,7 @@ metadata:
   name: weatherapi-vs
 spec:
   hosts:
-    - api.weatherapi.com
+    - "*"
   gateways:
     - weatherapi-out-gw
   tls:
