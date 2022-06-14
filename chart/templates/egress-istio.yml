@@ -12,7 +12,7 @@ spec:
   resolution: DNS
   location: MESH_EXTERNAL
   endpoints:
-  - address: weatherapi-egressgateway.istio-system.svc.cluster.local
+  - address: weatherapi-egressgateway.weather.svc.cluster.local
     ports:
       http: 443
 ---
