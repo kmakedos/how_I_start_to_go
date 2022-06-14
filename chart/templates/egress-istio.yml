@@ -154,6 +154,7 @@ spec:
     - api.weatherapi.com
   gateways:
     - egress-gw
+  http:
     - match:
         - gateways:
             - egress-gw
