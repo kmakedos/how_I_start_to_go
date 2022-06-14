@@ -58,7 +58,7 @@ spec:
   servers:
     - port:
         number: 80
-        name: http
+        name: http-port
         protocol: HTTP
       hosts:
         - api.weatherapi.com
