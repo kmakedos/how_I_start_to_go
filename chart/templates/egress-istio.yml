@@ -9,6 +9,7 @@ spec:
     - number: 80
       name: http
       protocol: HTTP
+      targetport: 443
     - number: 443
       name: https
       protocol: HTTPS
