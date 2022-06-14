@@ -69,4 +69,4 @@ spec:
   endpoints:
     - address: api.weatherapi.com
       ports:
-        http: 443
+        https: 443
