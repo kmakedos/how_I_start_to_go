@@ -17,7 +17,7 @@ spec:
 apiVersion: networking.istio.io/v1alpha3
 kind: DestinationRule
 metadata:
-  name: weatherapi-com
+  name: weatherapi-dest-rule
 spec:
   host: api.weatherapi.com
   trafficPolicy:
