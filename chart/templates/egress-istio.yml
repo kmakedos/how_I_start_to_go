@@ -68,7 +68,7 @@ kind: DestinationRule
 metadata:
   name: egress-dr
 spec:
-  host: egress-gw.istio-system.svc.cluster.local
+  host: egress-gw
   subsets:
     - name: egress-se
 ---
@@ -89,7 +89,7 @@ spec:
           port: 80
       route:
         - destination:
-            host: egress-gw.istio-system.svc.cluster.local
+            host: egress-gw
             subset: egress-se
             port:
               number: 80
