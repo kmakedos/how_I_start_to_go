@@ -14,7 +14,7 @@ spec:
   endpoints:
   - address: weatherapi-egressgateway.weather.svc.cluster.local
     ports:
-      http: 443
+      https: 443
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
