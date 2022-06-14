@@ -36,7 +36,7 @@ kind: DestinationRule
 metadata:
   name: weather-egress-gw
 spec:
-  host: weather-egress-gw.istio-system.svc.cluster.local
+  host: weather-egress-gw.weather.svc.cluster.local
   subsets:
     - name: weatherapi-se
       trafficPolicy:
