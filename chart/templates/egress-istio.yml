@@ -48,9 +48,9 @@ spec:
         - port: 443
           sniHosts:
             - api.weatherapi.com
-#      route:
-#        - destination:
-#            host: api.weatherapi.com.local
+      route:
+        - destination:
+            host: api.weatherapi.com
 #---
 #apiVersion: networking.istio.io/v1alpha3
 #kind: ServiceEntry
