@@ -90,7 +90,7 @@ spec:
       route:
         - destination:
             host: egress-gw.weather.svc.cluster.local
-            subset: cnn
+            subset: weather-se
             port:
               number: 80
           weight: 100
