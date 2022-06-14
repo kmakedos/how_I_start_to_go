@@ -4,7 +4,7 @@ metadata:
   name: weatherapi-se
 spec:
   hosts:
-    - 'api.weatherapi.com'
+    - api.weatherapi.com
   ports:
     - number: 80
       name: http
