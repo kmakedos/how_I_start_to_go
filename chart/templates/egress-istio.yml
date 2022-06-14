@@ -14,37 +14,85 @@ spec:
       protocol: HTTPS
   resolution: DNS
 ---
-#apiVersion: networking.istio.io/v1alpha3
-#kind: Gateway
-#metadata:
-#  name: weather-egress-gw
-#spec:
-#  selector:
-#    istio: egressgateway
-#  servers:
-#    - port:
-#        number: 80
-#        name: https-port-for-tls-origination
-#        protocol: HTTPS
-#      hosts:
-#        - api.weatherapi.com
-#      tls:
-#        mode: ISTIO_MUTUAL
-#---
-#apiVersion: networking.istio.io/v1alpha3
-#kind: DestinationRule
-#metadata:
-#  name: weather-egress-gw
-#spec:
-#  host: weather-egress-gw.istio-system.svc.cluster.local
-#  subsets:
-#    - name: weatherapi-se
-#      trafficPolicy:
-#        loadBalancer:
-#          simple: ROUND_ROBIN
-#        portLevelSettings:
-#          - port:
-#              number: 80
-#            tls:
-#              mode: ISTIO_MUTUAL
-#              sni: api.weatherapi.com
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: weather-egress-gw
+spec:
+  selector:
+    istio: egressgateway
+  servers:
+    - port:
+        number: 80
+        name: https-port-for-tls-origination
+        protocol: HTTPS
+      hosts:
+        - api.weatherapi.com
+      tls:
+        mode: ISTIO_MUTUAL
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: weather-egress-gw
+spec:
+  host: weather-egress-gw.istio-system.svc.cluster.local
+  subsets:
+    - name: weatherapi-se
+      trafficPolicy:
+        loadBalancer:
+          simple: ROUND_ROBIN
+        portLevelSettings:
+          - port:
+              number: 80
+            tls:
+              mode: ISTIO_MUTUAL
+              sni: api.weatherapi.com
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: weatheapi-vs
+spec:
+  hosts:
+    - api.weatherapi.com
+  gateways:
+    - weather-egress-gw
+    - mesh
+  http:
+    - match:
+        - gateways:
+            - mesh
+          port: 80
+      route:
+        - destination:
+            host: weather-egress-gw.weather.svc.cluster.local
+            subset: weather-se
+            port:
+              number: 80
+          weight: 100
+    - match:
+        - gateways:
+            - weather-egress-gw
+          port: 80
+      route:
+        - destination:
+            host: api.weatherapi.com
+            port:
+              number: 443
+          weight: 100
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: originate-tls-for-weather
+spec:
+  host: api.weatherapi.com
+  trafficPolicy:
+    loadBalancer:
+      simple: ROUND_ROBIN
+    portLevelSettings:
+      - port:
+          number: 443
+        tls:
+          mode: SIMPLE # initiates HTTPS for connections to edition.cnn.com
