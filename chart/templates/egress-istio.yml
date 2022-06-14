@@ -51,7 +51,7 @@ spec:
             - api.weatherapi.com
       route:
         - destination:
-            host: api.weatherapi.com-local
+            host: api.weatherapi.com.local
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: ServiceEntry
@@ -59,14 +59,14 @@ metadata:
   name: api-weatherapi-com-local
 spec:
   hosts:
-    - api.weatherapi.com-local
+    - api.weatherapi.com.local
   ports:
     - number: 443
       name: https
       protocol: HTTPS
   location: MESH_EXTERNAL
   resolution: DNS
-#  endpoints:
-#    - address: api.weatherapi.com
-#      ports:
-#        http: 443
+  endpoints:
+    - address: api.weatherapi.com
+      ports:
+        http: 443
