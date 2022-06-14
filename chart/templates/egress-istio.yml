@@ -23,7 +23,7 @@ spec:
   trafficPolicy:
     portLevelSettings:
       - port:
-          number: 443
+          number: 80
         tls:
           mode: SIMPLE # initiates HTTPS when accessing api.weatherapi.com
 
