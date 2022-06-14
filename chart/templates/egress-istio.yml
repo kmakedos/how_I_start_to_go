@@ -31,6 +31,8 @@ spec:
         protocol: HTTPS
       hosts:
         - "*"
+      tls:
+        mode: PASSTHROUGH
 
 
 
