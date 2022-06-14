@@ -80,19 +80,19 @@ spec:
     - api.weatherapi.com
   gateways:
     - egress-gw
-    - mesh
+#    - mesh
   http:
-    - match:
-        - gateways:
-            - mesh
-          port: 80
-      route:
-        - destination:
-            host: egress-gw.weather.svc.cluster.local
-            subset: weather-se
-            port:
-              number: 80
-          weight: 100
+#    - match:
+#        - gateways:
+#            - mesh
+#          port: 80
+#      route:
+#        - destination:
+#            host: egress-gw.weather.svc.cluster.local
+#            subset: weather-se
+#            port:
+#              number: 80
+#          weight: 100
     - match:
         - gateways:
             - egress-gw
