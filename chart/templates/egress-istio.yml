@@ -41,7 +41,7 @@ spec:
     - api.weatherapi.com
   ports:
     - number: 80
-      name: http-port
+      name: http
       protocol: HTTP
     - number: 443
       name: https
@@ -58,10 +58,12 @@ spec:
   servers:
     - port:
         number: 80
-        name: http-port
-        protocol: HTTP
+        name: https-port
+        protocol: HTTPS
       hosts:
         - api.weatherapi.com
+      tls:
+        mode: ISTIO_MUTUAL
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: DestinationRule
@@ -71,6 +73,15 @@ spec:
   host: egress-gw
   subsets:
     - name: egress-se
+      trafficPolicy:
+        loadBalancer:
+          simple: ROUND_ROBIN
+        portLevelSettings:
+        - port:
+            number: 80
+          tls:
+            mode: ISTIO_MUTUAL
+            sni: api.weatherapi.com
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
@@ -102,5 +113,20 @@ spec:
         - destination:
             host: api.weatherapi.com
             port:
-              number: 80
+              number: 443
           weight: 100
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: originate-dr
+spec:
+  host: api.weatherapi.com
+  trafficPolicy:
+    loadBalancer:
+      simple: ROUND_ROBIN
+    portLevelSettings:
+      - port:
+          number: 443
+        tls:
+          mode: SIMPLE # initiates HTTPS
