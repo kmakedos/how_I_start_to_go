@@ -40,7 +40,7 @@ metadata:
   name: weatherapi-vs
 spec:
   hosts:
-    - "*"
+    - api.weatherapi.com
   gateways:
     - weatherapi-out-gw
   tls:
@@ -50,22 +50,22 @@ spec:
             - api.weatherapi.com
       route:
         - destination:
-            host: api.weatherapi.com
+            host: api.weatherapi.com.local
 ---
-#apiVersion: networking.istio.io/v1alpha3
-#kind: ServiceEntry
-#metadata:
-#  name: api-weatherapi-com-local
-#spec:
-#  hosts:
-#    - api.weatherapi.com.local
-#  ports:
-#    - number: 443
-#      name: https
-#      protocol: HTTPS
-#  location: MESH_EXTERNAL
-#  resolution: DNS
-#  endpoints:
-#    - address: api.weatherapi.com
-#      ports:
-#        https: 443
+apiVersion: networking.istio.io/v1alpha3
+kind: ServiceEntry
+metadata:
+  name: api-weatherapi-com-local
+spec:
+  hosts:
+    - api.weatherapi.com.local
+  ports:
+    - number: 443
+      name: https
+      protocol: HTTPS
+  location: MESH_EXTERNAL
+  resolution: DNS
+  endpoints:
+    - address: api.weatherapi.com
+      ports:
+        https: 443
