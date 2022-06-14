@@ -1,71 +1,50 @@
-#apiVersion: networking.istio.io/v1alpha3
-#kind: ServiceEntry
-#metadata:
-#  name: weatherapi-se
-#spec:
-#  hosts:
-#    - api.weatherapi.com
-#  ports:
-#    - number: 443
-#      name: https
-#      protocol: HTTPS
-#  resolution: DNS
-#  location: MESH_EXTERNAL
-#  endpoints:
-#  - address: weatherapi-egressgateway.weather.svc.cluster.local
-#    ports:
-#      https: 443
-#---
+apiVersion: networking.istio.io/v1alpha3
+kind: ServiceEntry
+metadata:
+  name: weatherapi-se
+spec:
+  hosts:
+    - api.weatherapi.com
+  ports:
+    - number: 80
+      name: http
+      protocol: HTTP
+    - number: 443
+      name: https
+      protocol: HTTPS
+  resolution: DNS
+---
 #apiVersion: networking.istio.io/v1alpha3
 #kind: Gateway
 #metadata:
-#  name: weatherapi-out-gw
-#  namespace: weather
+#  name: weather-egress-gw
 #spec:
 #  selector:
 #    istio: egressgateway
 #  servers:
 #    - port:
-#        number: 443
-#        name: https
+#        number: 80
+#        name: https-port-for-tls-origination
 #        protocol: HTTPS
 #      hosts:
 #        - api.weatherapi.com
 #      tls:
-#        mode: PASSTHROUGH
+#        mode: ISTIO_MUTUAL
 #---
-apiVersion: networking.istio.io/v1alpha3
-kind: VirtualService
-metadata:
-  name: weatherapi-vs
-spec:
-  hosts:
-    - api.weatherapi.com
-#  gateways:
-#    - weatherapi-out-gw
-  tls:
-    - match:
-        - port: 443
-          sniHosts:
-            - api.weatherapi.com
-      route:
-        - destination:
-            host: api.weatherapi.com
----
 #apiVersion: networking.istio.io/v1alpha3
-#kind: ServiceEntry
+#kind: DestinationRule
 #metadata:
-#  name: api-weatherapi-com-local
+#  name: weather-egress-gw
 #spec:
-#  hosts:
-#    - api.weatherapi.com.local
-#  ports:
-#    - number: 443
-#      name: https
-#      protocol: HTTPS
-#  location: MESH_EXTERNAL
-#  resolution: DNS
-#  endpoints:
-#    - address: api.weatherapi.com
-#      ports:
-#        https: 443
+#  host: weather-egress-gw.istio-system.svc.cluster.local
+#  subsets:
+#    - name: weatherapi-se
+#      trafficPolicy:
+#        loadBalancer:
+#          simple: ROUND_ROBIN
+#        portLevelSettings:
+#          - port:
+#              number: 80
+#            tls:
+#              mode: ISTIO_MUTUAL
+#              sni: api.weatherapi.com
