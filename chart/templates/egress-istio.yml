@@ -109,88 +109,88 @@ spec:
       name: https
       protocol: HTTPS
   resolution: DNS
----
-apiVersion: networking.istio.io/v1alpha3
-kind: ServiceEntry
-metadata:
-  name: weatherapi-local-se
-spec:
-  hosts:
-    - api.weatherapi.local
-  ports:
-    - number: 80
-      name: http
-      protocol: HTTP
-    - number: 443
-      name: https
-      protocol: HTTPS
-  resolution: NONE
----
-apiVersion: networking.istio.io/v1alpha3
-kind: Gateway
-metadata:
-  name: egress-gw
-spec:
-  selector:
-    istio: egressgateway
-  servers:
-    - port:
-        number: 80
-        name: https-port
-        protocol: HTTPS
-      hosts:
-        - api.weatherapi.com
-      tls:
-        mode: ISTIO_MUTUAL
----
-apiVersion: networking.istio.io/v1alpha3
-kind: DestinationRule
-metadata:
-  name: egress-dr
-spec:
-  host: egress-gw.weather.svc.cluster.local
-  subsets:
-    - name: egress-se
-      trafficPolicy:
-        loadBalancer:
-          simple: ROUND_ROBIN
-        portLevelSettings:
-        - port:
-            number: 80
-          tls:
-            mode: ISTIO_MUTUAL
-            sni: api.weatherapi.com
----
-apiVersion: networking.istio.io/v1alpha3
-kind: VirtualService
-metadata:
-  name: egress-vs
-spec:
-  hosts:
-    - api.weatherapi.local
-  gateways:
-    - egress-gw
-    - mesh
-  http:
-    - match:
-        - gateways:
-            - egress-gw
-            - mesh
-          port: 80
-      redirect:
-        authority: api.weatherapi.com
----
-apiVersion: networking.istio.io/v1alpha3
-kind: DestinationRule
-metadata:
-  name: originate-dr
-spec:
-  host: api.weatherapi.com
-  trafficPolicy:
-    loadBalancer:
-      simple: ROUND_ROBIN
-    portLevelSettings:
-      - port:
-          number: 443
-        tls:
-          mode: SIMPLE # initiates HTTPS
+#---
+#apiVersion: networking.istio.io/v1alpha3
+#kind: ServiceEntry
+#metadata:
+#  name: weatherapi-local-se
+#spec:
+#  hosts:
+#    - api.weatherapi.local
+#  ports:
+#    - number: 80
+#      name: http
+#      protocol: HTTP
+#    - number: 443
+#      name: https
+#      protocol: HTTPS
+#  resolution: NONE
+#---
+#apiVersion: networking.istio.io/v1alpha3
+#kind: Gateway
+#metadata:
+#  name: egress-gw
+#spec:
+#  selector:
+#    istio: egressgateway
+#  servers:
+#    - port:
+#        number: 80
+#        name: https-port
+#        protocol: HTTPS
+#      hosts:
+#        - api.weatherapi.com
+#      tls:
+#        mode: ISTIO_MUTUAL
+#---
+#apiVersion: networking.istio.io/v1alpha3
+#kind: DestinationRule
+#metadata:
+#  name: egress-dr
+#spec:
+#  host: egress-gw.weather.svc.cluster.local
+#  subsets:
+#    - name: egress-se
+#      trafficPolicy:
+#        loadBalancer:
+#          simple: ROUND_ROBIN
+#        portLevelSettings:
+#        - port:
+#            number: 80
+#          tls:
+#            mode: ISTIO_MUTUAL
+#            sni: api.weatherapi.com
+#---
+#apiVersion: networking.istio.io/v1alpha3
+#kind: VirtualService
+#metadata:
+#  name: egress-vs
+#spec:
+#  hosts:
+#    - api.weatherapi.local
+#  gateways:
+#    - egress-gw
+#    - mesh
+#  http:
+#    - match:
+#        - gateways:
+#            - egress-gw
+#            - mesh
+#          port: 80
+#      redirect:
+#        authority: api.weatherapi.com
+#---
+#apiVersion: networking.istio.io/v1alpha3
+#kind: DestinationRule
+#metadata:
+#  name: originate-dr
+#spec:
+#  host: api.weatherapi.com
+#  trafficPolicy:
+#    loadBalancer:
+#      simple: ROUND_ROBIN
+#    portLevelSettings:
+#      - port:
+#          number: 443
+#        tls:
+#          mode: SIMPLE # initiates HTTPS
