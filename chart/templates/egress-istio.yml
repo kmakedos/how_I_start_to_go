@@ -130,7 +130,7 @@ kind: DestinationRule
 metadata:
   name: egressgateway-for-api
 spec:
-  host: egress-api.weather.svc.cluster.local
+  host: egress-api
   subsets:
   - name: api
 
@@ -152,7 +152,7 @@ spec:
           port: 80
       route:
         - destination:
-            host: egress-api.weather.svc.cluster.local
+            host: egress-api
             subset: api
             port:
               number: 80
