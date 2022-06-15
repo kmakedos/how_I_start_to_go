@@ -110,23 +110,23 @@ spec:
       protocol: HTTPS
   resolution: STATIC
 ---
-#apiVersion: networking.istio.io/v1alpha3
-#kind: Gateway
-#metadata:
-#  name: egress-gw
-#spec:
-#  selector:
-#    istio: egressgateway
-#  servers:
-#    - port:
-#        number: 80
-#        name: https-port
-#        protocol: HTTPS
-#      hosts:
-#        - api.weatherapi.com
-#      tls:
-#        mode: ISTIO_MUTUAL
-#---
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: egress-gw
+spec:
+  selector:
+    istio: egressgateway
+  servers:
+    - port:
+        number: 80
+        name: https-port
+        protocol: HTTPS
+      hosts:
+        - api.weatherapi.com
+      tls:
+        mode: ISTIO_MUTUAL
+---
 #apiVersion: networking.istio.io/v1alpha3
 #kind: DestinationRule
 #metadata:
@@ -145,22 +145,22 @@ spec:
 #            mode: ISTIO_MUTUAL
 #            sni: api.weatherapi.com
 #---
-#apiVersion: networking.istio.io/v1alpha3
-#kind: VirtualService
-#metadata:
-#  name: egress-vs
-#spec:
-#  hosts:
-#    - api.weatherapi.local
-#  gateways:
-#    - egress-gw
-#  http:
-#    - match:
-#        - gateways:
-#            - egress-gw
-#          port: 80
-#      redirect:
-#        authority: api.weatherapi.com
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: egress-vs
+spec:
+  hosts:
+    - api.weatherapi.local
+  gateways:
+    - egress-gw
+  http:
+    - match:
+        - gateways:
+            - egress-gw
+          port: 80
+      redirect:
+        authority: api.weatherapi.com
 #---
 #apiVersion: networking.istio.io/v1alpha3
 #kind: DestinationRule
