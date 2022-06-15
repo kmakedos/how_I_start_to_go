@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	WEATHERAPI = "api.weatherapi.local"
+	WEATHERAPI = "api.weatherapi.com"
 	//	OPENWEATHER = "api.openweathermap.org"
 	OPENWEATHER = "openweather.local"
 )
