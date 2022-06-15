@@ -141,7 +141,7 @@ metadata:
   name: direct-api-through-gw
 spec:
   hosts:
-    - api.weatherapi.com
+    - '*'
   gateways:
     - egress-api
     - mesh
