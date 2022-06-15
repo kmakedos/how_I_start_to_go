@@ -100,7 +100,7 @@ metadata:
   name: egress-se
 spec:
   hosts:
-    - api.weatherapi.local
+    - api.weatherapi.com
   ports:
     - number: 80
       name: http
