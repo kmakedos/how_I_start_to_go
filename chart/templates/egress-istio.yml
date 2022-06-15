@@ -131,7 +131,8 @@ metadata:
   name: egressgateway-for-api
 spec:
   host: egress-api.weather.svc.cluster.local
-  subset: api
+  subsets:
+  - name: api
 
 ---
 apiVersion: networking.istio.io/v1alpha3
