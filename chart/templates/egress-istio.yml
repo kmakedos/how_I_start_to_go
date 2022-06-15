@@ -161,12 +161,6 @@ spec:
           port: 80
       redirect:
         authority: api.weatherapi.com
-      route:
-        - destination:
-            host: api.weatherapi.com
-            port:
-              number: 443
-          weight: 100
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: DestinationRule
