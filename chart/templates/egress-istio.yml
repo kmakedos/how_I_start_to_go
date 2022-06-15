@@ -123,7 +123,7 @@ spec:
         name: http
         protocol: HTTP
       hosts:
-        - api.weatherapi.com
+        - '*'
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: DestinationRule
@@ -141,7 +141,7 @@ metadata:
   name: direct-api-through-gw
 spec:
   hosts:
-    - '*'
+    - api.weatherapi.com
   gateways:
     - egress-api
     - mesh
