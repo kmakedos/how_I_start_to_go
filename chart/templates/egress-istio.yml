@@ -94,13 +94,14 @@
 
 
 ####### Below we try to create TLS origination with Egress GW #########
+
 apiVersion: networking.istio.io/v1alpha3
 kind: ServiceEntry
 metadata:
-  name: weatherapi-se
+  name: weatherapi-local-se
 spec:
   hosts:
-    - api.weatherapi.com
+    - api.weatherapi.local
   ports:
     - number: 80
       name: http
@@ -108,82 +109,9 @@ spec:
     - number: 443
       name: https
       protocol: HTTPS
-  resolution: DNS
----
-apiVersion: networking.istio.io/v1alpha3
-kind: Gateway
-metadata:
-  name: egress-api
-spec:
-  selector:
-    istio: egressgateway
-  servers:
-    - port:
-        number: 80
-        name: http
-        protocol: HTTP
-      hosts:
-        - '*'
----
-apiVersion: networking.istio.io/v1alpha3
-kind: DestinationRule
-metadata:
-  name: egress-api-dr
-spec:
-  host: egress-api
-  subsets:
-  - name: api
-
----
-apiVersion: networking.istio.io/v1alpha3
-kind: VirtualService
-metadata:
-  name: direct-api-through-gw
-spec:
-  hosts:
-    - api.weatherapi.com
-  gateways:
-    - egress-api
-    - mesh
-  http:
-    - match:
-        - gateways:
-            - mesh
-          port: 80
-      route:
-        - destination:
-            host: egress-api
-            subset: api
-            port:
-              number: 80
-          weight: 100
-    - match:
-        - gateways:
-            - egress-api
-          port: 80
-      route:
-        - destination:
-            host: api.weatherapi.com
-            port:
-              number: 80
-          weight: 100
-
-#---
-#apiVersion: networking.istio.io/v1alpha3
-#kind: ServiceEntry
-#metadata:
-#  name: weatherapi-local-se
-#spec:
-#  hosts:
-#    - api.weatherapi.local
-#  ports:
-#    - number: 80
-#      name: http
-#      protocol: HTTP
-#    - number: 443
-#      name: https
-#      protocol: HTTPS
-#  resolution: NONE
+  resolution: STATIC
+  endpoints:
+    address: 0.0.0.0
 #---
 #apiVersion: networking.istio.io/v1alpha3
 #kind: Gateway
