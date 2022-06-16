@@ -171,7 +171,7 @@ spec:
           port: 80
       route:
         - destination:
-            host: egress-ew
+            host: egress-gw
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: DestinationRule
