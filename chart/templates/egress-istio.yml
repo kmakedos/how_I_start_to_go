@@ -162,16 +162,10 @@ spec:
     - match:
         - gateways:
             - egress-gw
+            - mesh
           port: 80
       redirect:
         authority: api.weatherapi.com
-    - match:
-        - gateways:
-            - mesh
-          port: 80
-      route:
-        - destination:
-            host: egress-gw
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: DestinationRule
