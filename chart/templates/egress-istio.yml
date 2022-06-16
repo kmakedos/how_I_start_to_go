@@ -157,6 +157,7 @@ spec:
     - api.weatherapi.local
   gateways:
     - egress-gw
+    - mesh
   http:
     - match:
         - gateways:
@@ -164,6 +165,13 @@ spec:
           port: 80
       redirect:
         authority: api.weatherapi.com
+    - match:
+        - gateways:
+            - mesh
+          port: 80
+      route:
+        - destination:
+            host: egress-ew
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: DestinationRule
