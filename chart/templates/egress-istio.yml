@@ -157,12 +157,10 @@ spec:
     - api.weatherapi.local
   gateways:
     - egress-gw
-    - mesh
   http:
     - match:
         - gateways:
             - egress-gw
-            - mesh
           port: 80
       redirect:
         authority: api.weatherapi.com
