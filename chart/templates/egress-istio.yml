@@ -111,7 +111,7 @@ spec:
       protocol: HTTPS
   resolution: STATIC
   endpoints:
-    address: 0.0.0.0
+    - address: 0.0.0.0
 #---
 #apiVersion: networking.istio.io/v1alpha3
 #kind: Gateway
