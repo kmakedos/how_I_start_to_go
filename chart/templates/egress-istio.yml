@@ -61,7 +61,7 @@ spec:
         name: https-port
         protocol: HTTPS
       hosts:
-        - api.weatherapi.com
+        - "*"
       tls:
         mode: ISTIO_MUTUAL
 ---
