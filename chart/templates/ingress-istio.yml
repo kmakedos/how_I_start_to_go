@@ -33,6 +33,6 @@ spec:
         prefix: /weather
     route:
     - destination:
-        host: weather-meteo.weather.svc.cluster.local
+        host: weatherapi.internal.weather.svc.cluster.local
         port:
           number: 80
