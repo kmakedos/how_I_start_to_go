@@ -22,7 +22,7 @@ spec:
     - weatherapi.internal
   gateways:
     - egress-gw
-#    - mesh
+    - mesh
   http:
     - match:
         - gateways:
