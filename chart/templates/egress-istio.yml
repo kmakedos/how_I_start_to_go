@@ -167,7 +167,7 @@ spec:
         - destination:
             host: api.weatherapi.com
             port:
-              number: 80
+              number: 443
     - match:
         - gateways:
             - mesh
