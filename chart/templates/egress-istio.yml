@@ -99,6 +99,7 @@ apiVersion: networking.istio.io/v1alpha3
 kind: ServiceEntry
 metadata:
   name: weatherapi-local-se
+  namespace: weather
 spec:
   hosts:
     - api.weatherapi.upwork
@@ -109,9 +110,8 @@ spec:
     - number: 443
       name: https
       protocol: HTTPS
-  resolution: STATIC
-  endpoints:
-    - address: 0.0.0.0
+  addresses:
+    - 0.0.0.0
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
