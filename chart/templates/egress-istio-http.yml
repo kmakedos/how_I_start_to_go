@@ -39,7 +39,7 @@ spec:
     - api.gateway.com
   gateways:
 #    - egressgw
-    - mesh
+#    - mesh
   http:
 #    - match:
 #        - gateways:
@@ -52,10 +52,10 @@ spec:
 #            host: api.weatherapi.com
 #            port:
 #              number: 80
-    - match:
-        - gateways:
-            - mesh
-          port: 80
+#    - match:
+#        - gateways:
+#            - mesh
+#          port: 80
       rewrite:
         authority: api.weatherapi.com
       route:
