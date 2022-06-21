@@ -10,8 +10,23 @@ spec:
     - number: 80
       name: http
       protocol: HTTP
+  resolution: STATIC
   addresses:
     - 192.168.100.100
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: ServiceEntry
+metadata:
+  name: weatherapi-remote
+  namespace: weather
+spec:
+  hosts:
+    - api.weatherapi.com
+  ports:
+    - number: 443
+      name: https
+      protocol: HTTPS
+  resolution: DNS
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
