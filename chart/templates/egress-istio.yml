@@ -34,13 +34,11 @@ spec:
           port: 80
       redirect:
         authority: api.weatherapi.com
-#      rewrite:
-#        authority: api.weatherapi.com
-#      route:
-#        - destination:
-#            host: api.weatherapi.com
-#            port:
-#              number: 443
+      route:
+        - destination:
+            host: api.weatherapi.com
+            port:
+              number: 443
 #    - match:
 #        - gateways:
 #            - mesh
