@@ -152,7 +152,7 @@ metadata:
   name: egress-vs
 spec:
   hosts:
-    - api.weatherapi.upwork
+    - weatherapi.internal
   gateways:
     - egress-gw
     - mesh
