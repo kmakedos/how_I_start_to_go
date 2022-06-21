@@ -32,7 +32,7 @@ spec:
             - egress-gw
             - mesh
           port: 80
-      redirect:
+      rewrite:
         authority: api.weatherapi.com
       route:
         - destination:
