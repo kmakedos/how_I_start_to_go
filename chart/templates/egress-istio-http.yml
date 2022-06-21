@@ -73,8 +73,8 @@ spec:
         number: 80
         name: http-port
         protocol: HTTP
-      hosts:
-        - api.weatherapi.com
+#      hosts:
+#        - api.weatherapi.com
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: DestinationRule
