@@ -122,7 +122,7 @@ spec:
     istio: egressgateway
   servers:
     - port:
-        number: 80
+        number: 443
         name: https-port
         protocol: HTTPS
       hosts:
