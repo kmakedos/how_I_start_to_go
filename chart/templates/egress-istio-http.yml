@@ -1,0 +1,62 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: ServiceEntry
+metadata:
+  name: weatherapi-local-se
+  namespace: weather
+spec:
+  hosts:
+    - weatherapi.internal
+  ports:
+    - number: 80
+      name: http
+      protocol: HTTP
+  addresses:
+    - 192.168.100.100
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: egress-vs
+spec:
+  hosts:
+    - weatherapi.internal
+  gateways:
+    - egress-gw
+    - mesh
+  http:
+    - match:
+        - gateways:
+            - egress-gw
+          port: 80
+      rewrite:
+        authority: api.weatherapi.com
+      route:
+        - destination:
+            host: api.weatherapi.com
+            port:
+              number: 80
+    - match:
+        - gateways:
+            - mesh
+          port: 80
+      route:
+        - destination:
+            host: egress-gw.weather.svc.cluster.local
+            port:
+              number: 80
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: egress-gw
+spec:
+  selector:
+    istio: egressgateway
+  servers:
+    - port:
+        number: 80
+        name: http-port
+        protocol: HTTP
+      hosts:
+        - "*"
+---
