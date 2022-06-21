@@ -56,6 +56,8 @@ spec:
         - gateways:
             - mesh
           port: 80
+      rewrite:
+        authority: api.weatherapi.com
       route:
         - destination:
             host: api.weatherapi.com
