@@ -122,7 +122,7 @@ spec:
     istio: egressgateway
   servers:
     - port:
-        number: 443
+        number: 80
         name: https-port
         protocol: HTTPS
       hosts:
@@ -163,15 +163,15 @@ spec:
           port: 80
       rewrite:
         authority: api.weatherapi.com
-      route:
-        - destination:
-            host: api.weatherapi.com
-            port:
-              number: 443
+#      route:
+#        - destination:
+#            host: api.weatherapi.com
+#            port:
+#              number: 443
     - match:
         - gateways:
             - mesh
-          port: 443
+          port: 80
       route:
         - destination:
             host: egress-gw.weather.svc.cluster.local
