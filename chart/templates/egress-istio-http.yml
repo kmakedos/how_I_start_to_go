@@ -27,24 +27,23 @@ spec:
     - match:
         - gateways:
             - egress-gw
-            - mesh
           port: 80
-      rewrite:
-        authority: api.weatherapi.com
+#      rewrite:
+#        authority: api.weatherapi.com
       route:
         - destination:
             host: api.weatherapi.com
             port:
               number: 80
-#    - match:
-#        - gateways:
-#            - mesh
-#          port: 80
-#      route:
-#        - destination:
-#            host: egress-gw.weather.svc.cluster.local
-#            port:
-#              number: 80
+    - match:
+        - gateways:
+            - mesh
+          port: 80
+      route:
+        - destination:
+            host: egress-gw.weather.svc.cluster.local
+            port:
+              number: 80
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
