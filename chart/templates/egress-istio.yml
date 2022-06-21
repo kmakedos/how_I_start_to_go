@@ -161,13 +161,13 @@ spec:
         - gateways:
             - egress-gw
           port: 80
-      redirect:
+      rewrite:
         authority: api.weatherapi.com
-#      route:
-#        - destination:
-#            host: api.weatherapi.com
-#            port:
-#              number: 443
+      route:
+        - destination:
+            host: api.weatherapi.com
+            port:
+              number: 443
     - match:
         - gateways:
             - mesh
