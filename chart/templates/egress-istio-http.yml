@@ -34,7 +34,7 @@ metadata:
   name: egress-vs
 spec:
   hosts:
-    - weatherapi.internal
+    - api.weatherapi.com
   gateways:
     - egress-gw
     - mesh
@@ -43,8 +43,8 @@ spec:
         - gateways:
             - egress-gw
           port: 80
-      rewrite:
-        authority: api.weatherapi.com
+#      rewrite:
+#        authority: api.weatherapi.com
       route:
         - destination:
             host: api.weatherapi.com
@@ -73,8 +73,8 @@ spec:
         number: 80
         name: http-port
         protocol: HTTP
-#      hosts:
-#        - api.weatherapi.com
+      hosts:
+        - api.weatherapi.com
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: DestinationRule
