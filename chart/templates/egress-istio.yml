@@ -136,15 +136,15 @@ metadata:
   name: egress-dr
 spec:
   host: egress-gw.weather.svc.cluster.local
-    trafficPolicy:
-      loadBalancer:
-        simple: ROUND_ROBIN
-      portLevelSettings:
-      - port:
-          number: 80
-        tls:
-          mode: ISTIO_MUTUAL
-          sni: api.weatherapi.com
+  trafficPolicy:
+    loadBalancer:
+      simple: ROUND_ROBIN
+    portLevelSettings:
+    - port:
+        number: 80
+      tls:
+        mode: ISTIO_MUTUAL
+        sni: api.weatherapi.com
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
