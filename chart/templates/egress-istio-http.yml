@@ -22,7 +22,7 @@ spec:
     - weatherapi.internal
   gateways:
     - egress-gw
-    - mesh
+#    - mesh
   http:
     - match:
         - gateways:
@@ -35,15 +35,15 @@ spec:
             host: api.weatherapi.com
             port:
               number: 80
-    - match:
-        - gateways:
-            - mesh
-          port: 80
-      route:
-        - destination:
-            host: egress-gw.weather.svc.cluster.local
-            port:
-              number: 80
+#    - match:
+#        - gateways:
+#            - mesh
+#          port: 80
+#      route:
+#        - destination:
+#            host: egress-gw.weather.svc.cluster.local
+#            port:
+#              number: 80
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
