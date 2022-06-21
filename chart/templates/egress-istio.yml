@@ -161,7 +161,7 @@ spec:
         - gateways:
             - egress-gw
           port: 80
-      rewrite:
+      redirect:
         authority: api.weatherapi.com
 #      route:
 #        - destination:
