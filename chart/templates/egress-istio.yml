@@ -15,3 +15,39 @@ spec:
       protocol: HTTPS
   addresses:
     - 192.168.100.100
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: egress-vs
+spec:
+  hosts:
+    - weatherapi.internal
+  gateways:
+    - egress-gw
+    - mesh
+  http:
+    - match:
+        - gateways:
+            - egress-gw
+            - mesh
+          port: 80
+      redirect:
+        authority: api.weatherapi.com
+#      rewrite:
+#        authority: api.weatherapi.com
+#      route:
+#        - destination:
+#            host: api.weatherapi.com
+#            port:
+#              number: 443
+#    - match:
+#        - gateways:
+#            - mesh
+#          port: 80
+#      route:
+#        - destination:
+#            host: egress-gw.weather.svc.cluster.local
+#            port:
+#              number: 80
+#---
