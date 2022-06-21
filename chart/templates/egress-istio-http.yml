@@ -27,6 +27,7 @@ spec:
     - match:
         - gateways:
             - egress-gw
+            - mesh
           port: 80
       rewrite:
         authority: api.weatherapi.com
