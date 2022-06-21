@@ -23,9 +23,9 @@ spec:
   hosts:
     - api.weatherapi.com
   ports:
-    - number: 443
-      name: https
-      protocol: HTTPS
+    - number: 80
+      name: http
+      protocol: HTTP
   resolution: DNS
 ---
 apiVersion: networking.istio.io/v1alpha3
@@ -43,8 +43,8 @@ spec:
         - gateways:
             - egress-gw
           port: 80
-#      rewrite:
-#        authority: api.weatherapi.com
+      rewrite:
+        authority: api.weatherapi.com
       route:
         - destination:
             host: api.weatherapi.com
