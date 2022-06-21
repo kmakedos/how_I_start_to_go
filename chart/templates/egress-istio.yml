@@ -101,7 +101,7 @@ metadata:
   name: weatherapi-local-se
 spec:
   hosts:
-    - api.weatherapi.local
+    - api.weatherapi.upwork
   ports:
     - number: 80
       name: http
@@ -152,7 +152,7 @@ metadata:
   name: egress-vs
 spec:
   hosts:
-    - api.weatherapi.local
+    - api.weatherapi.upwork
   gateways:
     - egress-gw
     - mesh
