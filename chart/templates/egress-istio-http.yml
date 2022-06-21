@@ -11,6 +11,7 @@ spec:
       name: http
       protocol: HTTP
   resolution: STATIC
+  location: MESH_INTERNAL
   addresses:
     - 192.168.100.100
 ---
@@ -27,6 +28,7 @@ spec:
       name: http
       protocol: HTTP
   resolution: DNS
+  location: MESH_EXTERNAL
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
