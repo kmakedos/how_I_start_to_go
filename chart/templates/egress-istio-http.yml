@@ -57,8 +57,7 @@ spec:
       route:
         - destination:
             host: egress-gw.weather.svc.cluster.local
-            subsets:
-              - name: weatherapi-external
+            subsets: weatherapi-external
             port:
               number: 80
 ---
