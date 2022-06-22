@@ -99,7 +99,7 @@ spec:
               number: 80
             tls:
               mode: ISTIO_MUTUAL
-              sni: weather.internal
+              #sni: weather.internal
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: DestinationRule
