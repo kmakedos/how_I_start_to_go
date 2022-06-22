@@ -118,4 +118,5 @@ spec:
         tls:
           mode: SIMPLE # initiates HTTPS
           sni: api.weatherapi.com
+          caCertificates: /etc/ssl/certs/ca-certificates.crt
 ---
