@@ -10,6 +10,9 @@ spec:
     - number: 80
       name: http
       protocol: HTTP
+    - number: 443
+      name: https
+      protocol: HTTPS
   resolution: STATIC
   location: MESH_EXTERNAL
   addresses:
@@ -99,7 +102,7 @@ spec:
               number: 80
             tls:
               mode: ISTIO_MUTUAL
-              #sni: weather.internal
+              sni: weather.internal
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: DestinationRule
