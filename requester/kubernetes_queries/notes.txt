@@ -1,0 +1,29 @@
+
+LATENCY
+
+In general latency is the time we spend until some request to EKS is handled.
+Since this is a managed system, we cannot enforce policies or monitor directly the control plane components.
+But we can keep an eye on how long requests take to be executed and be warned when something goes off.
+
+Limits and Alerts here should be set on catastrophic/disaster scenarios, when latency goes too high or there is a
+combination of high latency and errors.
+
+# 95th percentile of apiserver requests latency on READ actions for 12h
+histogram_quantile(0.95,sum(rate(apiserver_request_duration_seconds_bucket{ resource=~".*",verb=~"(LIST|GET)"}[12h])) by (le,resource,verb))
+# 95th percentile of apiserver requests latency on WRITE actions for 12h
+histogram_quantile(0.95,sum(rate(apiserver_request_duration_seconds_bucket{ resource=~".*",verb=~"(PUT|POST|PATCH|APPLY|DELETE)"}[12h])) by (le,resource,verb))
+histogram_quantile(0.95,sum(rate(apiserver_request_duration_seconds_bucket{ resource=~"deployments",verb=~"(PUT|POST|PATCH|APPLY|DELETE)"}[2h])) by (le,resource,verb))
+
+# Istio sending command to proxy and execution time 95th percentile
+histogram_quantile(0.95, sum(rate(pilot_proxy_convergence_time_bucket [12h])) by (le))
+
+
+histogram_quantile(0.95,sum(rate(workqueue_queue_duration_seconds_bucket{}[1h])) by (le,kind))
+
+
+
+sum(rate(apiserver_request_duration_seconds_bucket{resource="pods"}[5m])) by (le)
+
+scheduler_scheduling_attempt_duration_seconds_bucket
+
+
