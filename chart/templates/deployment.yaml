@@ -4,6 +4,8 @@ metadata:
   name: {{ include "weather-chart.fullname" . }}
   labels:
     {{- include "weather-chart.labels" . | nindent 4 }}
+
+    myport: "Alpha"
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
