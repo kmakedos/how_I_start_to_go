@@ -25,6 +25,7 @@ serviceAccount:
 
 podAnnotations: 
   sidecar.istio.io/extraStattags: myport
+  myport: "NAAAAA"
 
 podSecurityContext: {}
   # fsGroup: 2000
