@@ -24,7 +24,6 @@ serviceAccount:
 
 podAnnotations: 
   sidecar.istio.io/extraStattags: port_defined
-  "port_defined": "Alpha"
 
 podSecurityContext: {}
   # fsGroup: 2000

@@ -19,9 +19,7 @@ spec:
       {{- end }}
       labels:
         {{- include "weather-chart.selectorLabels" . | nindent 8 }}
-        {{-  with .Values.labels }}
-          {{-  toYaml . | nindent 4}}
-        {{- end }}
+        port_defined: "Alpha"
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
