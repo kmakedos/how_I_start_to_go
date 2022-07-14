@@ -35,6 +35,7 @@ Common labels
 */}}
 {{- define "weather-chart.labels" -}}
 helm.sh/chart: {{ include "weather-chart.chart" . }}
+myport: "Alpha"
 {{ include "weather-chart.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
