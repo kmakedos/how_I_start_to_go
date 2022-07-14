@@ -3,8 +3,6 @@
 # Declare variables to be passed into your templates.
 
 replicaCount: 1
-labels:
-  myport: "Alpha"
 image:
   repository: ghcr.io/kmakedos/how_i_start_to_go
   pullPolicy: Always
@@ -26,7 +24,7 @@ serviceAccount:
 
 podAnnotations: 
   sidecar.istio.io/extraStattags: myport
-  myport: "Alpha"
+  "myport": "Alpha"
 
 podSecurityContext: {}
   # fsGroup: 2000
