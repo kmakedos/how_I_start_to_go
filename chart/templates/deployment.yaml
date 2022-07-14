@@ -20,6 +20,7 @@ spec:
       labels:
         {{- include "weather-chart.selectorLabels" . | nindent 8 }}
         port_defined: "Alpha"
+        app.upwork.com/bounded-context: "PLATFORM"
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
